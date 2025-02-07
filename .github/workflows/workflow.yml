@@ -10,9 +10,8 @@ jobs:
         run: |
           echo "github.ref_name: ${{ github.ref_name }}"
           echo "github.workflow_ref: ${{ github.workflow_ref }}"
-          echo "github.workflow_sha: ${{ github.workflow_sha }}"
 
       - name: "Call action"
-        uses: lindeskar/gha-test/foo-action@${{ github.workflow_sha }}
+        uses: lindeskar/gha-test/foo-action@main
         with:
           msg: "Hello world"
