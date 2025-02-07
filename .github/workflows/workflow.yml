@@ -1,0 +1,18 @@
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Debug
+        run: |
+          echo "github.ref_name: ${{ github.ref_name }}"
+          echo "github.workflow_ref: ${{ github.workflow_ref }}"
+          echo "github.workflow_sha: ${{ github.workflow_sha }}"
+
+      - name: "Call action"
+        uses: lindeskar/gha-test/foo-action@${{ github.workflow_sha }}
+        with:
+          msg: "Hello world"
