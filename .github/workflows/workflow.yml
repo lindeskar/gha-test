@@ -1,5 +1,9 @@
 on:
   workflow_call:
+    inputs:
+      action-version:
+        type: string
+        required: true
 
 jobs:
   test:
@@ -10,8 +14,9 @@ jobs:
         run: |
           echo "github.ref_name: ${{ github.ref_name }}"
           echo "github.workflow_ref: ${{ github.workflow_ref }}"
+          echo "inputs.action-version: ${{ inputs.action-version }}"
 
       - name: "Call action"
-        uses: lindeskar/gha-test/foo-action@main
+        uses: lindeskar/gha-test/foo-action@${{ inputs.action-version }}
         with:
           msg: "Hello world"
