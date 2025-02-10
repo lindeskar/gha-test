@@ -38,11 +38,11 @@ jobs:
         run: |
           exit 1
 
-      - name: "Call action"
-        uses: lindeskar/gha-test/foo-action@${{ inputs.action-version }}
-        with:
-          arg: ${{ tojson(inputs.action-version) }}
-          msg: "Hello world"
+      # - name: "Call action"
+      #   uses: lindeskar/gha-test/foo-action@${{ inputs.action-version }}
+      #   with:
+      #     arg: ${{ tojson(inputs.action-version) }}
+      #     msg: "Hello world"
 
   confirm-success:
     name: "Confirm success"
