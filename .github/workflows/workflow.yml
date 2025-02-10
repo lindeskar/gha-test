@@ -48,13 +48,11 @@ jobs:
   confirm-success:
     name: "Confirm success"
     if: ${{ !cancelled() }}
-    needs:
-      - find_tf_dirs
-      - terraform
+    needs: terraform
     runs-on: ubuntu-latest
     steps:
       - name: Fail if any Terraform job failed
-        if: ${{ needs.terraform.result == 'failure' && toJson(fromJson(needs.find_tf_dirs.outputs.tf_dirs)) != '[]' }}
+        if: ${{ needs.terraform.result == 'failure' }}
         uses: actions/github-script@v3
         with:
           script: |
