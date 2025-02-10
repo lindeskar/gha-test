@@ -9,7 +9,7 @@ jobs:
   find_tf_dirs:
     runs-on: ubuntu-latest
     outputs:
-      tf_dirs: '[]'
+      tf_dirs: '["foo", "bar"]'
     steps:
       - name: "Debug"
         run: |
