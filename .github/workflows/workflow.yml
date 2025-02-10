@@ -49,7 +49,7 @@ jobs:
       - foreach
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ failure() && fromJson(needs.find_tf_dirs.outputs.tf_dirs) != null }}
+      - if: ${{ failure() && toJson(fromJson(needs.find_tf_dirs.outputs.tf_dirs)) != '[]' }}
         run: |
           echo "At least one plan failed - check the previous job for more details"
           exit 1
