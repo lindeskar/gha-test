@@ -22,6 +22,7 @@ jobs:
     needs: find_tf_dirs
     if: ${{ toJson(fromJson(needs.find_tf_dirs.outputs.tf_dirs)) != '[]' }}
     strategy:
+      fail-fast: false
       matrix:
         tf_dir: ${{fromJson(needs.find_tf_dirs.outputs.tf_dirs)}}
     steps:
@@ -49,7 +50,7 @@ jobs:
       - foreach
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ failure() }}
+      - name: Failure
+        if: ${{ needs.foreach.result == 'failure' && toJson(fromJson(needs.find_tf_dirs.outputs.tf_dirs)) != '[]' }}
         run: |
-          echo "At least one plan failed - check the previous job for more details"
           exit 1
