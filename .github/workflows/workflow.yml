@@ -9,7 +9,7 @@ jobs:
   find_tf_dirs:
     runs-on: ubuntu-latest
     outputs:
-      tf_dirs: '[]'
+      tf_dirs: '["foo"]'
     steps:
       - name: "Debug"
         run: |
@@ -30,6 +30,9 @@ jobs:
           echo "github.ref_name: ${{ github.ref_name }}"
           echo "github.workflow_ref: ${{ github.workflow_ref }}"
           echo "inputs.action-version: ${{ inputs.action-version }}"
+      - name: fail
+        run: |
+          exit 1
 
       # - name: "Call action"
       #   uses: lindeskar/gha-test/foo-action@${{ inputs.action-version }}
