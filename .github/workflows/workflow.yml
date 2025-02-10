@@ -9,7 +9,7 @@ jobs:
   find_tf_dirs:
     runs-on: ubuntu-latest
     outputs:
-      tf_dirs: '["foo", "bar"]'
+      tf_dirs: '["foo", "bar", "fail_me"]'
     steps:
       - name: "Debug"
         run: |
@@ -17,7 +17,7 @@ jobs:
           echo "github.workflow_ref: ${{ github.workflow_ref }}"
           echo "inputs.action-version: ${{ inputs.action-version }}"
 
-  foreach:
+  terraform:
     runs-on: ubuntu-latest
     needs: find_tf_dirs
     if: ${{ toJson(fromJson(needs.find_tf_dirs.outputs.tf_dirs)) != '[]' }}
@@ -32,8 +32,9 @@ jobs:
           echo "github.ref_name: ${{ github.ref_name }}"
           echo "github.workflow_ref: ${{ github.workflow_ref }}"
           echo "inputs.action-version: ${{ inputs.action-version }}"
-      - name: fail
-        if: ${{ matrix.tf_dir == 'foo' }}
+
+      - name: fail one tf_dir
+        if: ${{ matrix.tf_dir == 'fail_me' }}
         run: |
           exit 1
 
@@ -48,10 +49,12 @@ jobs:
     if: ${{ !cancelled() }}
     needs:
       - find_tf_dirs
-      - foreach
+      - terraform
     runs-on: ubuntu-latest
     steps:
-      - name: Failure
-        if: ${{ needs.foreach.result == 'failure' && toJson(fromJson(needs.find_tf_dirs.outputs.tf_dirs)) != '[]' }}
-        run: |
-          exit 1
+      - name: Fail if any Terraform job failed
+        if: ${{ needs.terraform.result == 'failure' && toJson(fromJson(needs.find_tf_dirs.outputs.tf_dirs)) != '[]' }}
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('At least one Terraform job failed - check the GitHub logs for details')
