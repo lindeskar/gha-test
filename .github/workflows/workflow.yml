@@ -9,7 +9,7 @@ jobs:
   find_tf_dirs:
     runs-on: ubuntu-latest
     outputs:
-      tf_dirs: '["foo", "bar", "fail_me"]'
+      tf_dirs: '["foo", "bar"]'
     steps:
       - name: "Debug"
         run: |
@@ -38,11 +38,11 @@ jobs:
         run: |
           exit 1
 
-      # - name: "Call action"
-      #   uses: lindeskar/gha-test/foo-action@${{ inputs.action-version }}
-      #   with:
-      #     arg: ${{ tojson(inputs.action-version) }}
-      #     msg: "Hello world"
+      - name: "Call action"
+        uses: lindeskar/gha-test/foo-action@${{ inputs.action-version }}
+        with:
+          arg: ${{ tojson(inputs.action-version) }}
+          msg: "Hello world"
 
   confirm-success:
     name: "Confirm success"
