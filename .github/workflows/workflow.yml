@@ -33,6 +33,7 @@ jobs:
           echo "github.workflow_ref: ${{ github.workflow_ref }}"
           echo "inputs.action-version: ${{ inputs.action-version }}"
       - name: fail
+        if: ${{ matrix.tf_dir == 'foo' }}
         run: |
           exit 1
 
